@@ -1,6 +1,0 @@
-E:\Sources\C#\Public Source Releases\ScriptBloxAPI\bin\Debug\ScriptBloxAPI.dll
-E:\Sources\C#\Public Source Releases\ScriptBloxAPI\bin\Debug\ScriptBloxAPI.pdb
-E:\Sources\C#\Public Source Releases\ScriptBloxAPI\obj\Debug\ScriptBloxAPI.csproj.AssemblyReference.cache
-E:\Sources\C#\Public Source Releases\ScriptBloxAPI\obj\Debug\ScriptBloxAPI.csproj.CoreCompileInputs.cache
-E:\Sources\C#\Public Source Releases\ScriptBloxAPI\obj\Debug\ScriptBloxAPI.dll
-E:\Sources\C#\Public Source Releases\ScriptBloxAPI\obj\Debug\ScriptBloxAPI.pdb
