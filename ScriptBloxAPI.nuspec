@@ -6,11 +6,11 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <license type="expression">GPL-3.0</license>
+    <license type="expression">GPL-3.0-only</license>
     <!-- <icon>icon.png</icon> -->
     <projectUrl>https://github.com/IrisV3rm/ScriptBloxAPI</projectUrl>
     <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Initial Release.</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>
   </metadata>
