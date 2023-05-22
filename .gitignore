@@ -4,4 +4,5 @@
 /obj/Debug
 /bin/Release
 /obj/Release
-.vs/ScriptBloxAPI/v17/.suo
+/.vs
+/FileContentIndex
