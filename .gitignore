@@ -6,3 +6,6 @@
 /obj/Release
 /.vs
 /FileContentIndex
+
+*.nupkg
+*.nuspec
