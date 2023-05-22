@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ScriptBloxAPI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Unofficial ScriptBlox API")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("IrisApp.ca")]
 [assembly: AssemblyProduct("ScriptBloxAPI")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
