@@ -1,53 +1,19 @@
 # ScriptBloxAPI
-### GetScriptFromScriptbloxId
 
-Retrieves a script from Scriptblox based on the provided Scriptblox ID.
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white) ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white) [![Support Server](https://img.shields.io/discord/477201632204161025.svg?label=Discord&logo=Discord&colorB=7289da&style=for-t-he-badge)](https://discord.gg/7mJaZC5) ![GitHub](https://img.shields.io/github/license/IrisV3rm/iOverlay?style=for-the-badge) ![GitHub all releases](https://img.shields.io/github/downloads/IrisV3rm/ScriptBloxAPI/total?style=for-the-badge)
 
-**Parameters:**
-- `bloxId` (string): The Scriptblox ID of the script to retrieve.
+## Features
+- GetScriptFromScriptbloxId\n
+- GetFrontPageScripts
+- GetScriptsFromPageNumber
+- GetScriptsFromQuery
+- GetScriptsFromUser
 
-**Returns:**
-- `Script`: The script retrieved from the API, or a default script if the retrieval fails or the data is invalid.
+- GetUserFromUsername
+- GetUserFromUsername
 
-### GetFrontPageScripts
+## License
 
-Retrieves a list of scripts from the front page based on the provided page number.
+[GNU AGPLv3](https://choosealicense.com/licenses/agpl-3.0/)
 
-**Parameters:**
-- `pageNumber` (int, optional): The page number of the front page scripts (default is 1).
-
-**Returns:**
-- `List<Script>`: A list of Script objects representing the scripts from the front page.
-
-### GetScriptsFromPageNumber
-
-Retrieves a list of scripts from the front page based on the provided page number.
-
-**Parameters:**
-- `pageNumber` (int, optional): The page number of the front page scripts (default is 1).
-
-**Returns:**
-- `List<Script>`: A list of Script objects representing the scripts from the front page.
-
-### GetScriptsFromQuery
-
-Retrieves a list of scripts from Scriptblox based on the provided search query and maximum results.
-
-**Parameters:**
-- `searchQuery` (string): The search query to filter the scripts.
-- `maxResults` (int, optional): The maximum number of results to retrieve (default is 20).
-
-**Returns:**
-- `List<Script>`: A list of Script objects representing the scripts matching the search query.
-
-### GetScriptsFromUser
-
-Retrieves a list of scripts from Scriptblox based on the provided username.
-
-**Parameters:**
-- `username` (string): The username of the user whose scripts to retrieve.
-
-**Returns:**
-- `List<Script>`: A list of Script objects representing the scripts owned by the user.
-
-Note: The `GetScriptsFromPageNumber` function is an alias for `GetFrontPageScripts` and behaves the same way.
+Documentation: https://api.irisapp.ca/Docs/ScriptBloxAPI/
