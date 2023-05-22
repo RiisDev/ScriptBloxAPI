@@ -10,7 +10,7 @@
     <!-- <icon>icon.png</icon> -->
     <projectUrl>https://github.com/IrisV3rm/ScriptBloxAPI</projectUrl>
     <description>$description$</description>
-    <releaseNotes>Initial Release.</releaseNotes>
+    <releaseNotes>Initial Release | Fixed Namespace</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>
   </metadata>
