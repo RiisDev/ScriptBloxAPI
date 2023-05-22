@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ScriptBloxAPI.DataTypes
 {
-    public class Script
+    public class ScriptObject
     {
         private GameObject game;
 
@@ -12,9 +12,9 @@ namespace ScriptBloxAPI.DataTypes
         private string _scriptBloxId = string.Empty;
         private string _executingScript = string.Empty;
 
-        private int _scriptViews = 0;
-        private int _scriptLikes = 0;
-        private int _scriptDislikes = 0;
+        private long _scriptViews = 0;
+        private long _scriptLikes = 0;
+        private long _scriptDislikes = 0;
 
         private bool _isUniversal = false;
         private bool _isPatched = false;
@@ -59,17 +59,17 @@ namespace ScriptBloxAPI.DataTypes
         /// <summary>
         /// Gets the number of views on the script.
         /// </summary>
-        public int Views => _scriptViews;
+        public long Views => _scriptViews;
 
         /// <summary>
         /// Gets the number of likes on the script.
         /// </summary>
-        public int Likes => _scriptLikes;
+        public long Likes => _scriptLikes;
 
         /// <summary>
         /// Gets the number of dislikes on the script.
         /// </summary>
-        public int Dislikes => _scriptDislikes;
+        public long Dislikes => _scriptDislikes;
 
         /// <summary>
         /// Gets a value indicating whether the script is universal.
@@ -102,7 +102,7 @@ namespace ScriptBloxAPI.DataTypes
         public DateTime UpdatedAt => _updatedAt;
 
 
-        public Script(GameObject game, string scriptTitle, string scriptId, string scriptBloxId, string ExecutingScript, string epocUpdated, string epocCreated, int scriptViews, int scriptLikes, int scriptDislikes, bool isUniversal, bool isPatched, bool requireskey, bool isverified, List<string> scriptTags)
+        public ScriptObject(GameObject game, string scriptTitle, string scriptId, string scriptBloxId, string ExecutingScript, string epocUpdated, string epocCreated, long scriptViews, long scriptLikes, long scriptDislikes, bool isUniversal, bool isPatched, bool requireskey, bool isverified, List<string> scriptTags)
         {
             this.game = game;
             _scriptTitle = scriptTitle;
@@ -117,6 +117,8 @@ namespace ScriptBloxAPI.DataTypes
             _executingScript = ExecutingScript;
             _isVerified = isverified;
             _requiresKey = requireskey;
+
+            Console.WriteLine(epocUpdated);
 
             _updatedAt = MiscFunctions.ConvertStringToDateTime(epocUpdated);
             _createdAt = MiscFunctions.ConvertStringToDateTime(epocCreated);

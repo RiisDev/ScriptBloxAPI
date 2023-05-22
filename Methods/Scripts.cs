@@ -4,23 +4,21 @@ using System.Collections.Generic;
 
 namespace ScriptBloxAPI.Methods
 {
-    public class Scripts
+    public class ScriptsMethods
     {
-        private static Script _invalidScript = new Script(new GameObject(0, "", ""), "N/A", "N/A", "N/A", "N/A", "2023-05-22T10:36:23.273Z", "2023-05-22T10:36:23.273Z", -1, -1, -1, false, false, false, false, new List<string>());
-
         /// <summary>
         /// Retrieves a script from Scriptblox based on the provided Scriptblox ID.
         /// </summary>
         /// <param name="bloxId">The Scriptblox ID of the script to retrieve.</param>
         /// <returns>The script retrieved from the API, or a default script if the retrieval fails or the data is invalid.</returns>
-        public static Script GetScriptFromScriptbloxId(string bloxId)
+        public static ScriptObject GetScriptFromScriptbloxId(string bloxId)
         {
-            dynamic jsonReturn = MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/{bloxId}").Result;
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/{bloxId}").Result);
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
-                throw new ScriptBloxException(jsonReturn["message"]);
+                throw new ScriptBloxException(jsonReturn.Value<string>("message"));
             if (jsonReturn["script"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
@@ -37,18 +35,18 @@ namespace ScriptBloxAPI.Methods
         /// </summary>
         /// <param name="pageNumber">The page number of the front page scripts (default is 1).</param>
         /// <returns>A list of Script objects representing the scripts from the front page.</returns>
-        public static List<Script> GetFrontPageScripts(int pageNumber = 1)
+        public static List<ScriptObject> GetFrontPageScripts(int pageNumber = 1)
         {
             if (pageNumber < 1) pageNumber = 1;
 
-            List<Script> scriptsToReturn = new List<Script>();
+            List<ScriptObject> scriptsToReturn = new List<ScriptObject>();
 
-            dynamic jsonReturn = MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/fetch?page={pageNumber}").Result;
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/fetch?page={pageNumber}").Result);
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
-                throw new ScriptBloxException(jsonReturn["message"]);
+                throw new ScriptBloxException(jsonReturn.Value<string>("message"));
             if (jsonReturn["script"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
@@ -64,7 +62,7 @@ namespace ScriptBloxAPI.Methods
         /// </summary>
         /// <param name="pageNumber">The page number of the front page scripts (default is 1).</param>
         /// <returns>A list of Script objects representing the scripts from the front page.</returns>
-        public static List<Script> GetScriptsFromPageNumber(int pageNumber = 1) => GetFrontPageScripts(pageNumber);
+        public static List<ScriptObject> GetScriptsFromPageNumber(int pageNumber = 1) => GetFrontPageScripts(pageNumber);
 
         /// <summary>
         /// Retrieves a list of scripts from Scriptblox based on the provided search query and maximum results.
@@ -72,18 +70,18 @@ namespace ScriptBloxAPI.Methods
         /// <param name="searchQuery">The search query to filter the scripts.</param>
         /// <param name="maxResults">The maximum number of results to retrieve (default is 20).</param>
         /// <returns>A list of Script objects representing the scripts matching the search query.</returns>
-        public static List<Script> GetScriptsFromQuery(string searchQuery, int maxResults = 20)
+        public static List<ScriptObject> GetScriptsFromQuery(string searchQuery, int maxResults = 20)
         {
             if (maxResults < 1) maxResults = 1;
 
-            List<Script> scriptsToReturn = new List<Script>();
+            List<ScriptObject> scriptsToReturn = new List<ScriptObject>();
 
-            dynamic jsonReturn = MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/search?q={searchQuery}&page=1&max={maxResults}").Result;
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/search?q={searchQuery}&page=1&max={maxResults}").Result);
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
-                throw new ScriptBloxException(jsonReturn["message"]);
+                throw new ScriptBloxException(jsonReturn.Value<string>("message"));
             if (jsonReturn["script"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
@@ -100,20 +98,20 @@ namespace ScriptBloxAPI.Methods
         /// </summary>
         /// <param name="username">The username of the user whose scripts to retrieve.</param>
         /// <returns>A list of Script objects representing the scripts owned by the user.</returns>
-        public static List<Script> GetScriptsFromUser(string username)
+        public static List<ScriptObject> GetScriptsFromUser(string username)
         {
-            List<Script> scriptsToReturn = new List<Script>();
+            List<ScriptObject> scriptsToReturn = new List<ScriptObject>();
 
-            dynamic jsonReturn = MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/u/{username}").Result;
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/u/{username}").Result);
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
-                throw new ScriptBloxException(jsonReturn["message"]);
+                throw new ScriptBloxException(jsonReturn.Value<string>("message"));
             if (jsonReturn["script"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
-            List<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
+            List<string> slugsToCheck = GetSlugsFromResults(jsonReturn.ToString());
 
             foreach (string slug in slugsToCheck) scriptsToReturn.Add(GetScriptFromScriptbloxId(slug));
 
@@ -139,13 +137,11 @@ namespace ScriptBloxAPI.Methods
                    scriptData["id"] == null;
         }
         
-        private static List<string> GetSlugsFromResults(string json)
+        private static List<string> GetSlugsFromResults(JToken json)
         {
             List<string> slugs = new List<string>();
 
-            JObject data = JObject.Parse(json);
-
-            JArray scripts = (JArray)data["result"]["scripts"];
+            JArray scripts = (JArray)json["result"]["scripts"];
 
             foreach (JToken script in scripts)
             {
@@ -156,22 +152,22 @@ namespace ScriptBloxAPI.Methods
             return slugs;
         }
 
-        private static Script CreateScriptFromData(JToken scriptData)
+        private static ScriptObject CreateScriptFromData(JToken scriptData)
         {
-            GameObject game = new GameObject(scriptData["game"].Value<int>("gameId"),
+            GameObject game = new GameObject(scriptData["game"].Value<long>("gameId"),
                                              scriptData["game"].Value<string>("name"),
                                              scriptData["game"].Value<string>("imageUrl"));
 
-            return new Script(game,
+            return new ScriptObject(game,
                               scriptData.Value<string>("title"),
                               scriptData.Value<string>("_id"),
                               scriptData.Value<string>("slug"),
                               scriptData.Value<string>("script"),
                               scriptData.Value<string>("createdAt"),
                               scriptData.Value<string>("updatedAt"),
-                              scriptData.Value<int>("views"),
-                              scriptData.Value<int>("likeCount"),
-                              scriptData.Value<int>("dislikeCount"),
+                              scriptData.Value<long>("views"),
+                              scriptData.Value<long>("likeCount"),
+                              scriptData.Value<long>("dislikeCount"),
                               scriptData.Value<bool>("isUniversal"),
                               scriptData.Value<bool>("isPatched"),
                               scriptData.Value<bool>("key"),
