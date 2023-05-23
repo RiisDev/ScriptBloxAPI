@@ -39,6 +39,24 @@ namespace ScriptBloxAPI.Methods
         }
 
         /// <summary>
+        /// Retrieves a UserObject based on the provided user ID using the ScriptBlox API.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>The UserObject corresponding to the user ID.</returns>
+        public static UserObject GetUserFromUserId(string userId) => GetUserFromUsername(userId);
+
+        /// <summary>
+        /// Retrieves the user ID from the given username using the ScriptBlox API.
+        /// </summary>
+        /// <param name="username">The username of the user.</param>
+        /// <returns>The user ID corresponding to the username.</returns>
+        public static string GetUserIdFromName(string username)
+        {
+            return GetUserFromUsername(username).Id;
+        }
+
+
+        /// <summary>
         /// Checks if a username is taken by making a request to the ScriptBlox API.
         /// </summary>
         /// <param name="username">The username to check.</param>

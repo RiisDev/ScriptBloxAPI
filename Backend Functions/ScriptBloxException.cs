@@ -9,6 +9,6 @@ namespace ScriptBloxAPI
 {
     internal class ScriptBloxException : Exception
     {
-        internal ScriptBloxException(string message) : base(message) => Console.WriteLine("CustomException was thrown with message: " + message);
+        internal ScriptBloxException(string message) : base(message) => Console.WriteLine("ScriptBloxException was thrown with message: " + message);
     }
 }

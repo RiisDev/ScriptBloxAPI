@@ -181,10 +181,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backend Functions\ScriptBloxException.cs" />
+    <Compile Include="DataTypes\BoolStatus.cs" />
     <Compile Include="DataTypes\CommentObject.cs" />
     <Compile Include="DataTypes\GameObject.cs" />
+    <Compile Include="DataTypes\NotificationObject.cs" />
     <Compile Include="DataTypes\ScriptObject.cs" />
     <Compile Include="DataTypes\UserObject.cs" />
+    <Compile Include="Methods\Authorization.cs" />
+    <Compile Include="Methods\Commenting.cs" />
+    <Compile Include="Methods\Notifications.cs" />
     <Compile Include="Methods\User.cs" />
     <Compile Include="Methods\Scripts.cs" />
     <Compile Include="Backend Functions\MiscFunctions.cs" />

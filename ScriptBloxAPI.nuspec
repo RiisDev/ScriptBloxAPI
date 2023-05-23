@@ -10,7 +10,22 @@
     <!-- <icon>icon.png</icon> -->
     <projectUrl>https://github.com/IrisV3rm/ScriptBloxAPI</projectUrl>
     <description>$description$</description>
-    <releaseNotes>3.0.0 | Fixed everything should work.</releaseNotes>
+    <releaseNotes>
+    - 4.0.0
+
+    - 2 New Data Types
+        -Notification Object
+        -BoolStatus
+    
+    - 3 New Method Handles
+        - Authorization (See Docs)
+        - Commenting
+        - Notification
+    - 2 New Methods in User Methods
+        - GetUserIdFromName
+        - GetUserFromUserId
+
+    </releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>
   </metadata>
