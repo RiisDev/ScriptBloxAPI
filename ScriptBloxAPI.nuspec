@@ -11,19 +11,11 @@
     <projectUrl>https://github.com/IrisV3rm/ScriptBloxAPI</projectUrl>
     <description>$description$</description>
     <releaseNotes>
-    - 4.0.0
+    - Security Update
+    - 4.0.1
 
-    - 2 New Data Types
-        -Notification Object
-        -BoolStatus
-    
-    - 3 New Method Handles
-        - Authorization (See Docs)
-        - Commenting
-        - Notification
-    - 2 New Methods in User Methods
-        - GetUserIdFromName
-        - GetUserFromUserId
+    - Fixed a security vulnerability reported
+    - Fixed reported bug with Scripts Methods
 
     </releaseNotes>
     <copyright>$copyright$</copyright>

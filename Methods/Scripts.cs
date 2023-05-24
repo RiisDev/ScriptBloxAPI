@@ -47,7 +47,7 @@ namespace ScriptBloxAPI.Methods
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["script"] == null)
+            if (jsonReturn["scripts"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
             List<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
@@ -82,7 +82,7 @@ namespace ScriptBloxAPI.Methods
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["script"] == null)
+            if (jsonReturn["scripts"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
             List<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
@@ -102,13 +102,13 @@ namespace ScriptBloxAPI.Methods
         {
             List<ScriptObject> scriptsToReturn = new List<ScriptObject>();
 
-            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/u/{username}").Result);
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/user/scripts/{username}?page=1").Result);
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["script"] == null)
+            if (jsonReturn["scripts"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
             List<string> slugsToCheck = GetSlugsFromResults(jsonReturn.ToString());

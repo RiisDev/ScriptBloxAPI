@@ -33,6 +33,8 @@ namespace ScriptBloxAPI.Methods
         /// <returns>A BoolStatus object indicating if the username change was successful and the response text.</returns>
         public static BoolStatus ChangeUsername(string authorization, string newUsername)
         {
+            if (UserMethods.IsUsernameTaken(newUsername)) return new BoolStatus(false, "Username taken.");
+
             HttpResponseMessage response = SendRequest("https://scriptblox.com/api/user/update", authorization, $"{{\"username\":\"{newUsername}\"}}");
 
             return new BoolStatus(response.Content.ReadAsStringAsync().Result.Contains("Password updated!"), response.Content.ReadAsStringAsync().Result);
