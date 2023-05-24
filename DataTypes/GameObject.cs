@@ -2,38 +2,33 @@
 {
     public  class GameObject
     {
-        private long _gameId = 0;
-        private string _gameName = string.Empty;   
-        private string _gameThumbnail = string.Empty;
-        private string _gameUrl = string.Empty;
-
         /// <summary>
         /// Gets the place ID.
         /// </summary>
-        public long PlaceId { get { return _gameId; } }
+        public long PlaceId { get; }
 
         /// <summary>
         /// Gets the game name.
         /// </summary>
-        public string Name { get { return _gameName; } }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the game thumbnail URL.
         /// </summary>
-        public string Thumbnail { get { return _gameThumbnail; } }
+        public string Thumbnail { get; }
 
         /// <summary>
         /// Gets the game URL.
         /// </summary>
-        public string Url { get { return _gameUrl; } }
+        public string Url { get; }
 
 
         public GameObject(long gameId, string gameName, string gameThumbnail)
         {
-            _gameId = gameId;
-            _gameName = gameName;
-            _gameThumbnail = "https://scriptblox.com"+gameThumbnail;
-            _gameUrl = $"https://www.roblox.com/games/{gameId}";
+            PlaceId = gameId;
+            Name = gameName;
+            Thumbnail = "https://scriptblox.com"+gameThumbnail;
+            Url = $"https://www.roblox.com/games/{gameId}";
         }
     }
 }

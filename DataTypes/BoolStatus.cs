@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptBloxAPI.DataTypes
+﻿namespace ScriptBloxAPI.DataTypes
 {
     public class BoolStatus
     {
-        private bool _value = false;
-        private string _status = string.Empty;
+        public bool Value { get; }
 
-        public bool Value => _value;
-        public string Status => _status;
+        public string Status { get; }
 
         public BoolStatus(bool value, string status)
         {
-            _value = value;
-            _status = status;
+            Value = value;
+            Status = status;
         }
     }
 }

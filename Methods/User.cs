@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using ScriptBloxAPI.Backend_Functions;
 using ScriptBloxAPI.DataTypes;
 
 namespace ScriptBloxAPI.Methods
@@ -16,11 +17,11 @@ namespace ScriptBloxAPI.Methods
             JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/user/info/{username}").Result);
 
             if (jsonReturn == null)
-                throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
             if (jsonReturn["user"] == null)
-                throw new ScriptBloxException("Backend error occured.");
+                throw new ScriptBloxException("Backend error occurred.");
 
             JToken userReturn = jsonReturn["user"];
 

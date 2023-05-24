@@ -1,13 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using ScriptBloxAPI.DataTypes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+using ScriptBloxAPI.Backend_Functions;
 
 namespace ScriptBloxAPI.Methods
 {
@@ -27,22 +22,22 @@ namespace ScriptBloxAPI.Methods
             JToken jsonReturn = JToken.Parse(response.Content.ReadAsStringAsync().Result);
 
             if (jsonReturn == null)
-                throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] == null)
-                
-
+                throw new ScriptBloxException("An error has occurred while adding comments: message <null>");
             if (jsonReturn.Value<string>("message") != "Commented!")
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
 
             JToken commentData = jsonReturn["comment"];
 
             return new CommentObject(
-                commentData.Value<string>("_id"),
-                commentData.Value<string>("text"),
+                commentData?.Value<string>("_id") ?? "-1",
+                commentData?.Value<string>("text") ?? "-1",
                 0,
                 0,
-                UserMethods.GetUserFromUserId(commentData.Value<string>("commentBy"))
+                UserMethods.GetUserFromUserId(commentData?.Value<string>("commentBy"))
             );
+
         }
 
         /// <summary>
@@ -75,11 +70,11 @@ namespace ScriptBloxAPI.Methods
             JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/comment/{script.Id}?page=1&max=999").Result);
 
             if (jsonReturn == null)
-                throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
             if (jsonReturn["comments"] == null)
-                throw new ScriptBloxException("Backend error occured.");
+                throw new ScriptBloxException("Backend error occurred.");
 
             foreach (JToken comment in jsonReturn["comments"])
             {
@@ -88,21 +83,21 @@ namespace ScriptBloxAPI.Methods
                     comment.Value<string>("text"),
                     comment.Value<int>("likeCount"),
                     comment.Value<int>("dislikeCount"),
-                    UserMethods.GetUserFromUsername(comment["commentBy"].Value<string>("username"))
+                    UserMethods.GetUserFromUsername(comment["commentBy"]?.Value<string>("username"))
                 ));
             }
 
             return comments;
         }
 
-        internal static HttpResponseMessage SendRequest(string url, string authorization, string data, bool WithAuth = true)
+        internal static HttpResponseMessage SendRequest(string url, string authorization, string data, bool withAuth = true)
         {
-            if (WithAuth)
+            if (withAuth)
                 MiscFunctions.HttpClient.DefaultRequestHeaders.Add("authorization", authorization);
 
             HttpResponseMessage response = MiscFunctions.HttpClient.PostAsync(url, new StringContent(data)).Result;
 
-            if (WithAuth)
+            if (withAuth)
                 MiscFunctions.HttpClient.DefaultRequestHeaders.Remove("authorization");
 
             return response;

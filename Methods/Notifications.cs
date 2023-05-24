@@ -1,13 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using ScriptBloxAPI.DataTypes;
 using System.Collections.Generic;
+using System.Linq;
+using ScriptBloxAPI.Backend_Functions;
 using static ScriptBloxAPI.DataTypes.NotificationObject;
 
 namespace ScriptBloxAPI.Methods
 {
     public class Notifications
     {
-        internal static Dictionary<string, NotificationType> _actionToType = new Dictionary<string, NotificationType>()
+        internal static Dictionary<string, NotificationType> ActionToType = new Dictionary<string, NotificationType>
         {
             { "followed", NotificationType.Followed },
             { "commented", NotificationType.CommentAddedToScript },
@@ -15,7 +17,7 @@ namespace ScriptBloxAPI.Methods
             { "SCRIPT_disliked", NotificationType.ScriptDisliked },
             { "SCRIPT_liked", NotificationType.ScriptLiked },
             { "COMM_disliked", NotificationType.CommentDisliked},
-            { "COMM_liked", NotificationType.CommentLiked },
+            { "COMM_liked", NotificationType.CommentLiked }
         };
 
         /// <summary>
@@ -29,22 +31,16 @@ namespace ScriptBloxAPI.Methods
             string jsonReturnString = MiscFunctions.HttpClient.GetStringAsync("https://scriptblox.com/api/user/notifications").Result;
             MiscFunctions.HttpClient.DefaultRequestHeaders.Remove("authorization");
 
-            if (string.IsNullOrEmpty(jsonReturnString))
-                throw new ScriptBloxException("An error has occurred while fetching the JSON, please submit a bug report.");
+            if (string.IsNullOrEmpty(jsonReturnString)) throw new ScriptBloxException("An error has occurred while fetching the JSON, please submit a bug report.");
 
             JToken jsonReturn = JToken.Parse(jsonReturnString);
             JArray jsonNotifications = (JArray)jsonReturn["notifications"];
 
-            if (jsonNotifications == null)
-                throw new ScriptBloxException("Backend error occurred.");
+            if (jsonNotifications == null) throw new ScriptBloxException("Backend error occurred.");
 
             List<NotificationObject> notifications = new List<NotificationObject>(jsonNotifications.Count);
 
-            foreach (JToken jsonNotification in jsonNotifications)
-            {
-                NotificationObject notification = ParseNotification(jsonNotification);
-                notifications.Add(notification);
-            }
+            notifications.AddRange(jsonNotifications.Select(ParseNotification));
 
             return notifications;
         }
@@ -58,13 +54,8 @@ namespace ScriptBloxAPI.Methods
         public static List<NotificationObject> GetNotificationsByType(string authorization, NotificationType type)
         {
             List<NotificationObject> notifications = GetAllNotifications(authorization);
-            List<NotificationObject> parsedNotifications = new List<NotificationObject>();
 
-            foreach (NotificationObject notification in notifications)
-                if (notification.Type == type)
-                    parsedNotifications.Add(notification);
-
-            return parsedNotifications;
+            return notifications.Where(notification => notification.Type == type).ToList();
         }
 
         #region Internal Functions
@@ -78,28 +69,32 @@ namespace ScriptBloxAPI.Methods
             ScriptObject scriptObject = null;
             NotificationType notificationType = NotificationType.CommentDisliked;
 
-            if (reference == "User")
+            switch (reference)
             {
-                userObject = UserMethods.GetUserFromUsername(jsonNotification["target"]["username"].Value<string>());
-                notificationType = _actionToType[action];
-            }
-            else if (reference == "Script")
-            {
-                string actionType = jsonNotification.Value<string>("type");
-
-                if (jsonNotification["target"]["slug"] != null)
-                    slug = jsonNotification["target"]["slug"].Value<string>();
-
-                if (action == "commented" || (action == "disliked" || action == "liked" && actionType == "Script"))
+                case "User":
+                    userObject = UserMethods.GetUserFromUsername((jsonNotification["target"]["username"] ?? throw new ScriptBloxException("Failed to parse username.")).Value<string>());
+                    notificationType = ActionToType[action];
+                    break;
+                case "Script":
                 {
-                    scriptObject = ScriptsMethods.GetScriptFromScriptbloxId(slug);
-                    notificationType = _actionToType[action];
-                }
-                else if (action == "disliked" || action == "liked")
-                {
-                    scriptObject = ScriptsMethods.GetScriptFromScriptbloxId(slug);
-                    string scriptAction = "COMM__" + action;
-                    notificationType = _actionToType[scriptAction];
+                    string actionType = jsonNotification.Value<string>("type");
+
+                    if (jsonNotification["target"]["slug"] != null)
+                        slug = jsonNotification["target"]["slug"].Value<string>();
+
+                    if (action == "commented" || action == "disliked" || action == "liked" && actionType == "Script")
+                    {
+                        scriptObject = ScriptsMethods.GetScriptFromScriptbloxId(slug);
+                        notificationType = ActionToType[action];
+                    }
+                    else if (action == "disliked" || action == "liked")
+                    {
+                        scriptObject = ScriptsMethods.GetScriptFromScriptbloxId(slug);
+                        string scriptAction = "COMM__" + action;
+                        notificationType = ActionToType[scriptAction];
+                    }
+
+                    break;
                 }
             }
 

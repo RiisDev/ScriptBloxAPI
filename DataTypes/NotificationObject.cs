@@ -1,28 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ScriptBloxAPI.Backend_Functions;
 
 namespace ScriptBloxAPI.DataTypes
 {
     public class NotificationObject
     {
-        private string _id = string.Empty;
-        private DateTime _createdAt = DateTime.MinValue;
-        private NotificationType _notificationType = NotificationType.CommentLiked;
-        private bool isRead = false;
+        public string Id { get; }
 
-        private UserObject userSender = null;
-        private ScriptObject scriptSender = null;
+        public DateTime CreatedAt { get; }
 
-        public string Id => _id;
-        public DateTime CreatedAt => _createdAt;
-        public NotificationType Type => _notificationType;
-        public bool IsRead => isRead;
-        public ScriptObject ScriptObjectSender => scriptSender;
-        public UserObject UserObjectSender => userSender;
+        public NotificationType Type { get; }
+
+        public bool IsRead { get; }
+
+        public ScriptObject ScriptObjectSender { get; }
+
+        public UserObject UserObjectSender { get; }
 
         public enum NotificationType
         {
@@ -31,19 +24,19 @@ namespace ScriptBloxAPI.DataTypes
             ScriptLiked,
             ScriptDisliked,
             CommentAddedToScript,
-            Followed,
+            Followed
         }
 
         public NotificationObject(string id, DateTime createdAt, NotificationType notificationType, bool isRead, UserObject userSender = null, ScriptObject scriptSender = null)
         {
             if (userSender == null && scriptSender == null) throw new ScriptBloxException("Must provide either a UserObject or ScriptObject");
 
-            _id = id;
-            _createdAt = createdAt;
-            _notificationType = notificationType;
-            this.isRead = isRead;
-            this.userSender = userSender;
-            this.scriptSender = scriptSender;
+            Id = id;
+            CreatedAt = createdAt;
+            Type = notificationType;
+            IsRead = isRead;
+            UserObjectSender = userSender;
+            ScriptObjectSender = scriptSender;
         }
     }
 }

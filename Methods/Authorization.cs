@@ -1,11 +1,6 @@
 ﻿using ScriptBloxAPI.DataTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using ScriptBloxAPI.Backend_Functions;
 
 namespace ScriptBloxAPI.Methods
 {
@@ -75,8 +70,8 @@ namespace ScriptBloxAPI.Methods
         /// <returns>A BoolStatus object indicating if the follow operation was successful and the response text.</returns>
         public static BoolStatus FollowUser(string authorization, string username)
         {
-            string UserId = UserMethods.GetUserIdFromName(username);
-            HttpResponseMessage response = SendRequest("https://scriptblox.com/api/user/follow", authorization, $"{{\"userId\":\"{UserId}\"}}");
+            string userId = UserMethods.GetUserIdFromName(username);
+            HttpResponseMessage response = SendRequest("https://scriptblox.com/api/user/follow", authorization, $"{{\"userId\":\"{userId}\"}}");
 
             return new BoolStatus(response.Content.ReadAsStringAsync().Result.Contains("You're now following "), response.Content.ReadAsStringAsync().Result);
         }
@@ -89,8 +84,8 @@ namespace ScriptBloxAPI.Methods
         /// <returns>A BoolStatus object indicating if the unfollow operation was successful and the response text.</returns>
         public static BoolStatus UnFollowUser(string authorization, string username)
         {
-            string UserId = UserMethods.GetUserIdFromName(username);
-            HttpResponseMessage response = SendRequest("https://scriptblox.com/api/user/unfollow", authorization, $"{{\"userId\":\"{UserId}\"}}");
+            string userId = UserMethods.GetUserIdFromName(username);
+            HttpResponseMessage response = SendRequest("https://scriptblox.com/api/user/unfollow", authorization, $"{{\"userId\":\"{userId}\"}}");
 
             return new BoolStatus(response.Content.ReadAsStringAsync().Result.Contains("Unfollowed user "), response.Content.ReadAsStringAsync().Result);
         }
@@ -107,14 +102,14 @@ namespace ScriptBloxAPI.Methods
             return new BoolStatus(response.Content.ReadAsStringAsync().Result.Contains("Password reset link has been sent to your email!"), response.Content.ReadAsStringAsync().Result);
         }
 
-        internal static HttpResponseMessage SendRequest(string url, string authorization, string data, bool WithAuth = true)
+        internal static HttpResponseMessage SendRequest(string url, string authorization, string data, bool withAuth = true)
         {
-            if (WithAuth)
+            if (withAuth)
                 MiscFunctions.HttpClient.DefaultRequestHeaders.Add("authorization", authorization);
 
             HttpResponseMessage response = MiscFunctions.HttpClient.PostAsync(url, new StringContent(data)).Result;
 
-            if (WithAuth)
+            if (withAuth)
                 MiscFunctions.HttpClient.DefaultRequestHeaders.Remove("authorization");
 
             return response;

@@ -1,31 +1,33 @@
 ﻿using Newtonsoft.Json.Linq;
 using ScriptBloxAPI.DataTypes;
 using System.Collections.Generic;
+using System.Linq;
+using ScriptBloxAPI.Backend_Functions;
 
 namespace ScriptBloxAPI.Methods
 {
     public class ScriptsMethods
     {
         /// <summary>
-        /// Retrieves a script from Scriptblox based on the provided Scriptblox ID.
+        /// Retrieves a script from ScriptBlox based on the provided ScriptBlox ID.
         /// </summary>
-        /// <param name="bloxId">The Scriptblox ID of the script to retrieve.</param>
+        /// <param name="bloxId">The ScriptBlox ID of the script to retrieve.</param>
         /// <returns>The script retrieved from the API, or a default script if the retrieval fails or the data is invalid.</returns>
         public static ScriptObject GetScriptFromScriptbloxId(string bloxId)
         {
             JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/{bloxId}").Result);
 
             if (jsonReturn == null)
-                throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
             if (jsonReturn["script"] == null)
-                throw new ScriptBloxException("Backend error occured.");
+                throw new ScriptBloxException("Backend error occurred.");
 
             JToken scriptData = jsonReturn["script"];
 
             if (IsScriptDataInvalid(scriptData))
-                throw new ScriptBloxException("An error has occured while parsing the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while parsing the json, please submit a bug report.");
 
             return CreateScriptFromData(scriptData);
         }
@@ -39,22 +41,18 @@ namespace ScriptBloxAPI.Methods
         {
             if (pageNumber < 1) pageNumber = 1;
 
-            List<ScriptObject> scriptsToReturn = new List<ScriptObject>();
-
             JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/fetch?page={pageNumber}").Result);
 
             if (jsonReturn == null)
-                throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["result"]["scripts"] == null)
-                throw new ScriptBloxException("Backend error occured.");
+            if (jsonReturn["result"]?["scripts"] == null)
+                throw new ScriptBloxException("Backend error occurred.");
 
-            List<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
+            IEnumerable<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
 
-            foreach (string slug in slugsToCheck) scriptsToReturn.Add(GetScriptFromScriptbloxId(slug));
-
-            return scriptsToReturn;
+            return slugsToCheck.Select(GetScriptFromScriptbloxId).ToList();
         }
 
         /// <summary>
@@ -65,7 +63,7 @@ namespace ScriptBloxAPI.Methods
         public static List<ScriptObject> GetScriptsFromPageNumber(int pageNumber = 1) => GetFrontPageScripts(pageNumber);
 
         /// <summary>
-        /// Retrieves a list of scripts from Scriptblox based on the provided search query and maximum results.
+        /// Retrieves a list of scripts from ScriptBlox based on the provided search query and maximum results.
         /// </summary>
         /// <param name="searchQuery">The search query to filter the scripts.</param>
         /// <param name="maxResults">The maximum number of results to retrieve (default is 20).</param>
@@ -74,48 +72,40 @@ namespace ScriptBloxAPI.Methods
         {
             if (maxResults < 1) maxResults = 1;
 
-            List<ScriptObject> scriptsToReturn = new List<ScriptObject>();
-
             JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/search?q={searchQuery}&page=1&max={maxResults}").Result);
 
             if (jsonReturn == null)
-                throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["result"]["scripts"] == null)
-                throw new ScriptBloxException("Backend error occured.");
+            if (jsonReturn["result"]?["scripts"] == null)
+                throw new ScriptBloxException("Backend error occurred.");
 
-            List<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
+            IEnumerable<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
 
-            foreach (string slug in slugsToCheck) scriptsToReturn.Add(GetScriptFromScriptbloxId(slug));
-
-            return scriptsToReturn;
+            return slugsToCheck.Select(GetScriptFromScriptbloxId).ToList();
 
         }
 
         /// <summary>
-        /// Retrieves a list of scripts from Scriptblox based on the provided username.
+        /// Retrieves a list of scripts from ScriptBlox based on the provided username.
         /// </summary>
         /// <param name="username">The username of the user whose scripts to retrieve.</param>
         /// <returns>A list of Script objects representing the scripts owned by the user.</returns>
         public static List<ScriptObject> GetScriptsFromUser(string username)
         {
-            List<ScriptObject> scriptsToReturn = new List<ScriptObject>();
-
             JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/user/scripts/{username}?page=1").Result);
 
             if (jsonReturn == null)
-                throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
+                throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["result"]["scripts"] == null)
-                throw new ScriptBloxException("Backend error occured.");
+            if (jsonReturn["result"]?["scripts"] == null)
+                throw new ScriptBloxException("Backend error occurred.");
 
-            List<string> slugsToCheck = GetSlugsFromResults(jsonReturn.ToString());
+            IEnumerable<string> slugsToCheck = GetSlugsFromResults(jsonReturn.ToString());
 
-            foreach (string slug in slugsToCheck) scriptsToReturn.Add(GetScriptFromScriptbloxId(slug));
-
-            return scriptsToReturn;
+            return slugsToCheck.Select(GetScriptFromScriptbloxId).ToList();
         }
 
         #region Internal Functions
@@ -137,17 +127,15 @@ namespace ScriptBloxAPI.Methods
                    scriptData["id"] == null;
         }
         
-        private static List<string> GetSlugsFromResults(JToken json)
+        private static IEnumerable<string> GetSlugsFromResults(JToken json)
         {
             List<string> slugs = new List<string>();
 
             JArray scripts = (JArray)json["result"]["scripts"];
 
-            foreach (JToken script in scripts)
-            {
-                string slug = script.Value<string>("slug");
-                slugs.Add(slug);
-            }
+            if (scripts == null) return slugs;
+
+            slugs.AddRange(scripts.Select(script => script.Value<string>("slug")));
 
             return slugs;
         }

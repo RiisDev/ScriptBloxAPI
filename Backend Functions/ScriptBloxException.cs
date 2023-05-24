@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ScriptBloxAPI
+namespace ScriptBloxAPI.Backend_Functions
 {
     internal class ScriptBloxException : Exception
     {

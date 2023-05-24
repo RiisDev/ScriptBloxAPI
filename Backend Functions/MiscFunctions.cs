@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Net.Http;
 
-namespace ScriptBloxAPI
+namespace ScriptBloxAPI.Backend_Functions
 {
     internal class MiscFunctions
     {
