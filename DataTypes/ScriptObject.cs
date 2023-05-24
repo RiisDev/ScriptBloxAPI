@@ -118,8 +118,6 @@ namespace ScriptBloxAPI.DataTypes
             _isVerified = isverified;
             _requiresKey = requireskey;
 
-            Console.WriteLine(epocUpdated);
-
             _updatedAt = MiscFunctions.ConvertStringToDateTime(epocUpdated);
             _createdAt = MiscFunctions.ConvertStringToDateTime(epocCreated);
         }

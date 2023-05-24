@@ -47,7 +47,7 @@ namespace ScriptBloxAPI.Methods
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["scripts"] == null)
+            if (jsonReturn["result"]["scripts"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
             List<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
@@ -82,7 +82,7 @@ namespace ScriptBloxAPI.Methods
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["scripts"] == null)
+            if (jsonReturn["result"]["scripts"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
             List<string> slugsToCheck = GetSlugsFromResults(jsonReturn);
@@ -108,7 +108,7 @@ namespace ScriptBloxAPI.Methods
                 throw new ScriptBloxException("An error has occured while fetching the json, please submit a bug report.");
             if (jsonReturn["message"] != null)
                 throw new ScriptBloxException(jsonReturn.Value<string>("message"));
-            if (jsonReturn["scripts"] == null)
+            if (jsonReturn["result"]["scripts"] == null)
                 throw new ScriptBloxException("Backend error occured.");
 
             List<string> slugsToCheck = GetSlugsFromResults(jsonReturn.ToString());
