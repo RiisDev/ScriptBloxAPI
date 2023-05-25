@@ -9,14 +9,11 @@
     <license type="expression">MIT</license>
     <readme>README.md</readme>
     <icon>ScriptBlox-Ico.png</icon>
-    <projectUrl>https://github.com/IrisV3rm/ScriptBloxAPI</projectUrl>
+    <projectUrl>https://api.irisapp.ca/Docs/ScriptBloxAPI/</projectUrl>
     <description>$description$</description>
     <releaseNotes>
-    - Security Update
-    - 4.0.3
-
-    - License Update
-
+        - 4.0.4
+        - Package Edits
     </releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>
