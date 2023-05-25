@@ -6,19 +6,23 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <license type="expression">GPL-3.0-only</license>
-    <!-- <icon>icon.png</icon> -->
+    <license type="expression">MIT</license>
+    <readme>README.md</readme>
+    <icon>ScriptBlox-Ico.png</icon>
     <projectUrl>https://github.com/IrisV3rm/ScriptBloxAPI</projectUrl>
     <description>$description$</description>
     <releaseNotes>
     - Security Update
-    - 4.0.2
+    - 4.0.3
 
-    - Fixed a security vulnerability reported
-    - Fixed reported bug with Scripts Methods
+    - License Update
 
     </releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>
+    <repository type="git" url="https://github.com/IrisV3rm/ScriptBloxAPI" />
   </metadata>
+  <files>
+    <file src="README.md"/>
+  </files>
 </package>
