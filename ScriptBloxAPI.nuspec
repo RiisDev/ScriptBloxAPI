@@ -12,8 +12,8 @@
     <projectUrl>https://api.irisapp.ca/Docs/ScriptBloxAPI/</projectUrl>
     <description>$description$</description>
     <releaseNotes>
-        - 4.0.4
-        - Package Edits
+        - 4.0.5
+        - Added method to convert the given image format to a PNG format "ConvertWebPToBitmap(string fileUrl)"
     </releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>
