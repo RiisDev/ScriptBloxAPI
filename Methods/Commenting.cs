@@ -69,7 +69,7 @@ namespace ScriptBloxAPI.Methods
         /// </exception>
         public static List<CommentObject> GetCommentsFromScript(ScriptObject script)
         {
-            List<CommentObject> comments = new List<CommentObject>();
+            List<CommentObject> comments = new();
 
             JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/comment/{script.Id}?page=1&max=999").Result);
 
@@ -120,7 +120,7 @@ namespace ScriptBloxAPI.Methods
         /// </exception>
         public static async Task<List<CommentObject>> GetCommentsFromScriptAsync(ScriptObject script)
         {
-            List<CommentObject> comments = new List<CommentObject>();
+            List<CommentObject> comments = new();
 
             JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/comment/{script.Id}?page=1&max=999"));
 

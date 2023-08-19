@@ -12,8 +12,16 @@
     <projectUrl>https://api.irisapp.ca/Docs/ScriptBloxAPI/</projectUrl>
     <description>$description$</description>
     <releaseNotes>
-        - 4.0.5
-        - Added method to convert the given image format to a PNG format "ConvertWebPToBitmap(string fileUrl)"
+        - 5.0.0
+        * Added an internal convert to WebP Method, 'ConvertWebPToBitmapInternal'
+        * Changed internl C# Language to 'latest'
+        * Updated 'NetCore.Platforms' -> 7.0.4
+        * Updated 'Fody' -> 6.8.0
+        * Fixed bug with 'GetSlugsFromResults' throwing a 'Cannot access child value on Newtonsoft.Json.Linq.JValue.'
+
+        + Added UserAgent to HttpClient to help usage control
+        + Created a new script Method 'GetScriptsWithFilter, GetScriptsWithFilterAsync'
+        + Created new Enum for Filters 'ScriptsMethod.FilterType' to be used with the new methods.
     </releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>

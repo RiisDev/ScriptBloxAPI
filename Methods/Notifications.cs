@@ -10,7 +10,7 @@ namespace ScriptBloxAPI.Methods
 {
     public class Notifications
     {
-        internal static Dictionary<string, NotificationType> ActionToType = new Dictionary<string, NotificationType>
+        internal static Dictionary<string, NotificationType> ActionToType = new()
         {
             { "followed", NotificationType.Followed },
             { "commented", NotificationType.CommentAddedToScript },
@@ -41,7 +41,7 @@ namespace ScriptBloxAPI.Methods
 
             if (jsonNotifications == null) throw new ScriptBloxException("Backend error occurred.");
 
-            List<NotificationObject> notifications = new List<NotificationObject>(jsonNotifications.Count);
+            List<NotificationObject> notifications = new(jsonNotifications.Count);
 
             notifications.AddRange(jsonNotifications.Select(ParseNotification));
 
@@ -135,7 +135,7 @@ namespace ScriptBloxAPI.Methods
             if (jsonNotifications == null)
                 throw new ScriptBloxException("Backend error occurred.");
 
-            List<NotificationObject> notifications = new List<NotificationObject>(jsonNotifications.Count);
+            List<NotificationObject> notifications = new(jsonNotifications.Count);
 
             notifications.AddRange((List<NotificationObject>)jsonNotifications.Select(ParseNotificationAsync));
 
