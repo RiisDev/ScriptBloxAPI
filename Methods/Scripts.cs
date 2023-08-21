@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using ScriptBloxAPI.Backend_Functions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+
 // ReSharper disable UnusedMember.Global
 #pragma warning disable IDE0270
 
@@ -173,14 +175,22 @@ namespace ScriptBloxAPI.Methods
         {
             List<string> slugs = new();
 
-            if (json.Type == JTokenType.String)
+            try
+            {
                 json = JToken.Parse(json.ToString());
+                
+                if (!json.HasValues) return slugs;
+                if (json["result"]  == null) return slugs;
+                if (json["result"]["scripts"] == null) return slugs;
 
-            JArray scripts = (JArray)json["result"]?["scripts"];
+                JArray scripts = JArray.Parse(json["result"]?["scripts"].ToString() ?? "[]");
 
-            if (scripts == null) return slugs;
-
-            slugs.AddRange(scripts.Select(script => script.Value<string>("slug")));
+                slugs.AddRange(scripts.Select(script => script.Value<string>("slug")));
+            }
+            catch (Exception ex)
+            {
+                throw new ScriptBloxException($@"An error occurred in 'GetSlugsFromResults' please create an issue @ github: {ex}{"\n"}{ex.StackTrace}");
+            }
 
             return slugs;
         }
@@ -207,9 +217,9 @@ namespace ScriptBloxAPI.Methods
                               scriptData.Value<bool>("verified"),
                               new List<string>());
         }
-        #endregion
+#endregion
 
-        #endregion
+#endregion
         #region Async
 
         /// <summary>
