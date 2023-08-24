@@ -2,18 +2,15 @@
 using Newtonsoft.Json.Linq;
 using ScriptBloxAPI.DataTypes;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using ScriptBloxAPI.Backend_Functions;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-
 // ReSharper disable UnusedMember.Global
 #pragma warning disable IDE0270
 
 namespace ScriptBloxAPI.Methods
 {
-    public class ScriptsMethods
+    public static class ScriptsMethods
     {
 
         public enum FilterType
@@ -29,8 +26,73 @@ namespace ScriptBloxAPI.Methods
             Paid
         }
 
-        #region Non Async
+        #region Internal Functions
+        private static bool IsScriptDataInvalid(JToken scriptData)
+        {
+            return scriptData["game"] == null ||
+                   scriptData["tags"] == null ||
+                   scriptData["script"] == null ||
+                   scriptData["views"] == null ||
+                   scriptData["verified"] == null ||
+                   scriptData["key"] == null ||
+                   scriptData["isUniversal"] == null ||
+                   scriptData["isPatched"] == null ||
+                   scriptData["createdAt"] == null ||
+                   scriptData["updatedAt"] == null ||
+                   scriptData["likeCount"] == null ||
+                   scriptData["dislikeCount"] == null ||
+                   scriptData["slug"] == null ||
+                   scriptData["id"] == null;
+        }
 
+        private static IEnumerable<string> GetSlugsFromResults(JToken json)
+        {
+            List<string> slugs = new();
+
+            try
+            {
+                json = JToken.Parse(json.ToString());
+
+                if (!json.HasValues) return slugs;
+                if (json["result"] == null) return slugs;
+                if (json["result"]["scripts"] == null) return slugs;
+
+                JArray scripts = json["result"]?["scripts"]?.ToObject<JArray>() ?? new JArray();
+
+                slugs.AddRange(scripts.Select(script => script.Value<string>("slug")));
+            }
+            catch (Exception ex)
+            {
+                throw new ScriptBloxException($"An error occurred in 'GetSlugsFromResults' please create an issue @ github: {ex}\n{ex.StackTrace}");
+            }
+
+            return slugs;
+        }
+
+        private static ScriptObject CreateScriptFromData(JToken scriptData)
+        {
+            GameObject game = new(scriptData["game"].Value<long>("gameId"),
+                                             scriptData["game"].Value<string>("name"),
+                                             scriptData["game"].Value<string>("imageUrl"));
+
+            return new ScriptObject(game,
+                              scriptData.Value<string>("title"),
+                              scriptData.Value<string>("_id"),
+                              scriptData.Value<string>("slug"),
+                              scriptData.Value<string>("script"),
+                              scriptData.Value<string>("createdAt"),
+                              scriptData.Value<string>("updatedAt"),
+                              scriptData.Value<long>("views"),
+                              scriptData.Value<long>("likeCount"),
+                              scriptData.Value<long>("dislikeCount"),
+                              scriptData.Value<bool>("isUniversal"),
+                              scriptData.Value<bool>("isPatched"),
+                              scriptData.Value<bool>("key"),
+                              scriptData.Value<bool>("verified"),
+                              new List<string>());
+        }
+        #endregion
+        #region Non Async
         /// <summary>
         /// Retrieves a script from ScriptBlox based on the provided ScriptBlox ID.
         /// </summary>
@@ -38,7 +100,7 @@ namespace ScriptBloxAPI.Methods
         /// <returns>The script retrieved from the API, or a default script if the retrieval fails or the data is invalid.</returns>
         public static ScriptObject GetScriptFromScriptbloxId(string bloxId)
         {
-            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/{bloxId}").Result);
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetSafeString($"https://scriptblox.com/api/script/{bloxId}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -64,7 +126,7 @@ namespace ScriptBloxAPI.Methods
         {
             if (pageNumber < 1) pageNumber = 1;
 
-            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/fetch?page={pageNumber}").Result);
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetSafeString($"https://scriptblox.com/api/script/fetch?page={pageNumber}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -95,7 +157,7 @@ namespace ScriptBloxAPI.Methods
         {
             if (maxResults < 1) maxResults = 1;
 
-            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/search?q={searchQuery}&page=1&max={maxResults}").Result);
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetSafeString($"https://scriptblox.com/api/script/search?q={searchQuery}&page=1&max={maxResults}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -117,7 +179,7 @@ namespace ScriptBloxAPI.Methods
         /// <returns>A list of Script objects representing the scripts owned by the user.</returns>
         public static List<ScriptObject> GetScriptsFromUser(string username)
         {
-            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/user/scripts/{username}?page=1").Result);
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetSafeString($"https://scriptblox.com/api/user/scripts/{username}?page=1"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -138,7 +200,7 @@ namespace ScriptBloxAPI.Methods
         /// <returns>A list of ScriptObjects that match the specified filter type.</returns>
         public static List<ScriptObject> GetScriptsWithFilter(FilterType filterType)
         {
-            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetStringAsync($@"https://scriptblox.com/api/script/fetch?page=1&filters[]={filterType.ToString().ToLower()}").Result);
+            JToken jsonReturn = JToken.Parse(MiscFunctions.HttpClient.GetSafeString($@"https://scriptblox.com/api/script/fetch?page=1&filters[]={filterType.ToString().ToLower()}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -151,74 +213,7 @@ namespace ScriptBloxAPI.Methods
 
             return slugsToCheck.Select(GetScriptFromScriptbloxId).ToList();
         }
-
-        #region Internal Functions
-        private static bool IsScriptDataInvalid(JToken scriptData)
-        {
-            return scriptData["game"] == null ||
-                   scriptData["tags"] == null ||
-                   scriptData["script"] == null ||
-                   scriptData["views"] == null ||
-                   scriptData["verified"] == null ||
-                   scriptData["key"] == null ||
-                   scriptData["isUniversal"] == null ||
-                   scriptData["isPatched"] == null ||
-                   scriptData["createdAt"] == null ||
-                   scriptData["updatedAt"] == null ||
-                   scriptData["likeCount"] == null ||
-                   scriptData["dislikeCount"] == null ||
-                   scriptData["slug"] == null ||
-                   scriptData["id"] == null;
-        }
-
-        private static IEnumerable<string> GetSlugsFromResults(JToken json)
-        {
-            List<string> slugs = new();
-
-            try
-            {
-                json = JToken.Parse(json.ToString());
-                
-                if (!json.HasValues) return slugs;
-                if (json["result"]  == null) return slugs;
-                if (json["result"]["scripts"] == null) return slugs;
-
-                JArray scripts = JArray.Parse(json["result"]?["scripts"].ToString() ?? "[]");
-
-                slugs.AddRange(scripts.Select(script => script.Value<string>("slug")));
-            }
-            catch (Exception ex)
-            {
-                throw new ScriptBloxException($@"An error occurred in 'GetSlugsFromResults' please create an issue @ github: {ex}{"\n"}{ex.StackTrace}");
-            }
-
-            return slugs;
-        }
-
-        private static ScriptObject CreateScriptFromData(JToken scriptData)
-        {
-            GameObject game = new(scriptData["game"].Value<long>("gameId"),
-                                             scriptData["game"].Value<string>("name"),
-                                             scriptData["game"].Value<string>("imageUrl"));
-
-            return new ScriptObject(game,
-                              scriptData.Value<string>("title"),
-                              scriptData.Value<string>("_id"),
-                              scriptData.Value<string>("slug"),
-                              scriptData.Value<string>("script"),
-                              scriptData.Value<string>("createdAt"),
-                              scriptData.Value<string>("updatedAt"),
-                              scriptData.Value<long>("views"),
-                              scriptData.Value<long>("likeCount"),
-                              scriptData.Value<long>("dislikeCount"),
-                              scriptData.Value<bool>("isUniversal"),
-                              scriptData.Value<bool>("isPatched"),
-                              scriptData.Value<bool>("key"),
-                              scriptData.Value<bool>("verified"),
-                              new List<string>());
-        }
-#endregion
-
+        
 #endregion
         #region Async
 
@@ -229,7 +224,7 @@ namespace ScriptBloxAPI.Methods
         /// <returns>The script retrieved from the API, or a default script if the retrieval fails or the data is invalid.</returns>
         public static async Task<ScriptObject> GetScriptFromScriptbloxIdAsync(string bloxId)
         {
-            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/{bloxId}"));
+            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetSafeStringAsync($"https://scriptblox.com/api/script/{bloxId}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -255,7 +250,7 @@ namespace ScriptBloxAPI.Methods
         {
             if (pageNumber < 1) pageNumber = 1;
 
-            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/fetch?page={pageNumber}"));
+            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetSafeStringAsync($"https://scriptblox.com/api/script/fetch?page={pageNumber}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -286,7 +281,7 @@ namespace ScriptBloxAPI.Methods
         {
             if (maxResults < 1) maxResults = 1;
 
-            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/script/search?q={searchQuery}&page=1&max={maxResults}"));
+            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetSafeStringAsync($"https://scriptblox.com/api/script/search?q={searchQuery}&page=1&max={maxResults}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -311,7 +306,7 @@ namespace ScriptBloxAPI.Methods
         /// <returns>A list of Script objects representing the scripts owned by the user.</returns>
         public static async Task<List<ScriptObject>> GetScriptsFromUserAsync(string username)
         {
-            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetStringAsync($"https://scriptblox.com/api/user/scripts/{username}"));
+            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetSafeStringAsync($"https://scriptblox.com/api/user/scripts/{username}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");
@@ -336,7 +331,7 @@ namespace ScriptBloxAPI.Methods
         /// <returns>A list of ScriptObjects that match the specified filter type.</returns>
         public static async Task<List<ScriptObject>> GetScriptsWithFilterAsync(FilterType filterType)
         {
-            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetStringAsync($@"https://scriptblox.com/api/script/fetch?page=1&filters[]={filterType.ToString().ToLower()}"));
+            JToken jsonReturn = JToken.Parse(await MiscFunctions.HttpClient.GetSafeStringAsync($@"https://scriptblox.com/api/script/fetch?page=1&filters[]={filterType.ToString().ToLower()}"));
 
             if (jsonReturn == null)
                 throw new ScriptBloxException("An error has occurred while fetching the json, please submit a bug report.");

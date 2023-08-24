@@ -12,8 +12,8 @@
     <projectUrl>https://api.irisapp.ca/Docs/ScriptBloxAPI/</projectUrl>
     <description>$description$</description>
     <releaseNotes>
-        - 5.0.1
-        - Hopefully fixed Slug issue
+        - 5.0.2
+        - .Net Framework 4.7.2 Support
     </releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>ScriptBlox ScriptBloxAPI</tags>
@@ -22,5 +22,6 @@
   <files>
     <file src="README.md"/>
     <file src="ScriptBlox-Ico.png"/>
+    <file src="G:\Sources\C#\Public Source Releases\ScriptBloxAPIFRamework4.7\bin\Release\ScriptBloxAPI.dll" target="lib\net472" />
   </files>
 </package>

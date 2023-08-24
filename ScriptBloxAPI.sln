@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBloxAPI", "ScriptBlox
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBloxTestSuite", "..\ScriptBloxTestSuite\ScriptBloxTestSuite.csproj", "{AE41542F-735F-4906-891F-73A4B35D9EEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBloxAPIFramework4.7", "..\ScriptBloxAPIFRamework4.7\ScriptBloxAPIFramework4.7.csproj", "{BB90C315-F7BD-4F9B-86E7-8DE95BB2DE2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AE41542F-735F-4906-891F-73A4B35D9EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE41542F-735F-4906-891F-73A4B35D9EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE41542F-735F-4906-891F-73A4B35D9EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB90C315-F7BD-4F9B-86E7-8DE95BB2DE2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB90C315-F7BD-4F9B-86E7-8DE95BB2DE2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB90C315-F7BD-4F9B-86E7-8DE95BB2DE2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB90C315-F7BD-4F9B-86E7-8DE95BB2DE2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
