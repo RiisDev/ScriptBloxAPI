@@ -29,7 +29,6 @@ namespace ScriptBloxAPI.Methods
             JToken userReturn = jsonReturn["user"];
 
             return new UserObject(
-                userReturn.Value<int>("scriptsCount"),
                 userReturn.Value<int>("followersCount"),
                 userReturn.Value<int>("followingCount"),
                 userReturn.Value<string>("username"),
