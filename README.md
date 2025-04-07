@@ -8,7 +8,6 @@
 ## Documentation
 
 Follows [ScriptBloxAPI Standards and Parameters](https://scriptblox.com/docs/scripts/fetch)
-Sure! Here's a `README.md` tailored for the `Scripts` class in your `ScriptBloxApi` C# library. It includes method descriptions, usage examples, and parameter details.
 
 ---
 
