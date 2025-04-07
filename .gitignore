@@ -1,12 +1,16 @@
-/bin
-/obj
-/bin/Debug
-/obj/Debug
-/bin/Release
-/obj/Release
-/.vs
-/FileContentIndex
+# Build artifacts
+bin/
+obj/
 
+# Visual Studio-related files
+.vs/
+
+# Miscellaneous
+/FileContentIndex
 *.nupkg
 *.nuspec
-.vs/ScriptBloxAPI/v17/.suo
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.qodo
