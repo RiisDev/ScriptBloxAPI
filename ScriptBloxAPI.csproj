@@ -13,10 +13,22 @@
     <RepositoryUrl>https://github.com/RiisDev/ScriptBloxAPI</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>scriptblox, scripts, roblox, scripting, lua</PackageTags>
-    <PackageReleaseNotes>Updated, ported to net standard to allow every application</PackageReleaseNotes>
+    <PackageReleaseNotes>- ReWrote parameter handler to lower memory usage
+
+Added Endpoints
+
+- UserStats.GetUserFollowingAsync(string username, int? page = 1, int? max = 20)
+- UserStats.GetUserFollowersAsync(string username, int? page = 1, int? max = 20)
+- UserStats.GetUserInfoAsync(string username, int? page = 1, int? max = 20)
+
+- Comments.GetScriptCommentsAsync(string scriptId, int? page = 1, int? max = 20)
+
+- Executors.GetRobloxVersions()
+
+- Scripts.FetchScriptsFromUser(string username, int? page = 1, int? max = 20)</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.0.0</Version>
+    <Version>6.2.0</Version>
     <PackageId> ScriptBloxAPI</PackageId>
   </PropertyGroup>
 

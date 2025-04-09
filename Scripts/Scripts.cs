@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using ScriptBloxApi.LanguageFeatures;
 using ScriptBloxApi.Objects;
+using static System.Int32;
 
 namespace ScriptBloxApi.Scripts
 {
@@ -42,17 +43,18 @@ namespace ScriptBloxApi.Scripts
             Order? order = null
         )
         {
-            Dictionary<string, string> queryParams = new ();
-
-            if (page.HasValue) queryParams.Add("page", page.Value.ToString());
-            if (max.HasValue) queryParams.Add("max", max.InternalClamp(1, 20).ToString());
-            if (mode.HasValue) queryParams.Add("mode", mode.ToString());
-            if (patched.HasValue) queryParams.Add("patched", patched.Value.GetBoolInt());
-            if (key.HasValue) queryParams.Add("key", key.Value.GetBoolInt());
-            if (universal.HasValue) queryParams.Add("universal", universal.Value.GetBoolInt());
-            if (verified.HasValue) queryParams.Add("verified", verified.Value.GetBoolInt());
-            if (sortBy.HasValue) queryParams.Add("sortBy", sortBy.ToString());
-            if (order.HasValue) queryParams.Add("order", order.ToString());
+            (string Key, string Value)[] queryParams =
+            [
+                ("page", page?.ToString()),
+                ("max", max.InternalClamp(1, 20).ToString()),
+                ("mode", mode?.ToString()),
+                ("patched", patched.GetBoolInt()),
+                ("key", key.GetBoolInt()),
+                ("universal", universal.GetBoolInt()),
+                ("verified", verified.GetBoolInt()),
+                ("sortBy", sortBy?.ToString()),
+                ("order", order?.ToString())
+            ];
 
             FetchResult fetchResult = await Client.Get<FetchResult>("script/fetch", queryParams);
 
@@ -65,10 +67,16 @@ namespace ScriptBloxApi.Scripts
 
         public static async Task<IReadOnlyList<Script>> FetchTrendingScriptsAsync(int? max = 20)
         {
-            FetchResult fetchResult = await Client.Get<FetchResult>("script/trending", new Dictionary<string, string>
-            {
-                {"max", max.InternalClamp(1, 20).ToString()}
-            });
+            FetchResult fetchResult = await Client.Get<FetchResult>("script/trending", [("max", max.InternalClamp(1, 20).ToString())]);
+            return fetchResult.Result.Scripts;
+        }
+
+        public static async Task<IReadOnlyList<Script>> FetchScriptsFromUser(string username, int? page = 1, int? max = 20)
+        {
+            FetchResult fetchResult = await Client.Get<FetchResult>($"user/scripts/{username}", [
+                ("page", page.InternalClamp(1, MaxValue).ToString()),
+                ("max", max.InternalClamp(1, 20).ToString())
+            ]);
             return fetchResult.Result.Scripts;
         }
 
@@ -86,19 +94,20 @@ namespace ScriptBloxApi.Scripts
             bool? strict = null
         )
         {
-            Dictionary<string, string> queryParams = new (){ { "q", query } };
+            (string Key, string Value)[] queryParams =
+            [
+                ("page", page.InternalClamp(1, MaxValue).ToString()),
+                ("max", max.InternalClamp(1, 20).ToString()),
+                ("mode", mode.ToString()),
+                ("patched", patched.GetBoolInt()),
+                ("key", key.GetBoolInt()),
+                ("universal", universal.GetBoolInt()),
+                ("verified", verified.GetBoolInt()),
+                ("sortBy", sortBy.ToString()),
+                ("order", order.ToString()),
+                ("strict", strict.ToString().ToLower())
+            ];
 
-            if (page.HasValue) queryParams.Add("page", page.Value.ToString());
-            if (max.HasValue) queryParams.Add("max", max.InternalClamp(1, 20).ToString());
-            if (mode.HasValue) queryParams.Add("mode", mode.ToString());
-            if (patched.HasValue) queryParams.Add("patched", patched.Value.GetBoolInt());
-            if (key.HasValue) queryParams.Add("key", key.Value.GetBoolInt());
-            if (universal.HasValue) queryParams.Add("universal", universal.Value.GetBoolInt());
-            if (verified.HasValue) queryParams.Add("verified", verified.Value.GetBoolInt());
-            if (sortBy.HasValue) queryParams.Add("sortBy", sortBy.ToString());
-            if (order.HasValue) queryParams.Add("order", order.ToString());
-            if (strict.HasValue) queryParams.Add("strict", strict.ToString().ToLower());
-            
             FetchResult fetchResult = await Client.Get<FetchResult>("script/search", queryParams);
 
             return fetchResult.Result;

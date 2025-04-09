@@ -22,9 +22,9 @@ namespace ScriptBloxApi
 
         internal static HttpClient HttpClient => LazyClient.Value;
 
-        internal static async Task<T> Get<T>(string endpoint, Dictionary<string, string> queryParams)
+        internal static async Task<T> Get<T>(string endpoint, (string Key, string Value)[]? queryParams)
         {
-            string queryString = string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+            string queryString = string.Join("&", queryParams?.Select(kvp => $"{kvp.Key}={kvp.Value}") ?? []);
 
             if (!string.IsNullOrEmpty(queryString))
                 queryString = "?" + queryString;
