@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBloxApi", "ScriptBloxApi.csproj", "{B5B7DB43-73E2-4B41-BA4E-F51C4AB092B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBloxTestSuite", "..\ScriptBloxTestSuite\ScriptBloxTestSuite\ScriptBloxTestSuite.csproj", "{813347DA-EE3F-4E4C-8C3E-B63FE91AE091}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBloxAPI.Tests", "ScriptBloxAPI.Tests\ScriptBloxAPI.Tests.csproj", "{1B192B96-105F-4553-AA54-5D9DDBDC3595}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{B5B7DB43-73E2-4B41-BA4E-F51C4AB092B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5B7DB43-73E2-4B41-BA4E-F51C4AB092B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5B7DB43-73E2-4B41-BA4E-F51C4AB092B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{813347DA-EE3F-4E4C-8C3E-B63FE91AE091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{813347DA-EE3F-4E4C-8C3E-B63FE91AE091}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{813347DA-EE3F-4E4C-8C3E-B63FE91AE091}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{813347DA-EE3F-4E4C-8C3E-B63FE91AE091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B192B96-105F-4553-AA54-5D9DDBDC3595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B192B96-105F-4553-AA54-5D9DDBDC3595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B192B96-105F-4553-AA54-5D9DDBDC3595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B192B96-105F-4553-AA54-5D9DDBDC3595}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

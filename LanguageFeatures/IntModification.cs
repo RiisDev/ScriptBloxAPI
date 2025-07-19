@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScriptBloxApi.LanguageFeatures
+﻿namespace ScriptBloxApi.LanguageFeatures
 {
     internal static class IntModification
     {

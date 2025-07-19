@@ -55,4 +55,11 @@ Added Endpoints
     </None>
   </ItemGroup>
 
+	<ItemGroup>
+		<Compile Remove="ScriptBloxAPI.Tests\**" />
+		<None Remove="ScriptBloxAPI.Tests\**" />
+		<Content Remove="ScriptBloxAPI.Tests\**" />
+		<EmbeddedResource Remove="ScriptBloxAPI.Tests\**" />
+	</ItemGroup>
+
 </Project>

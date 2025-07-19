@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ScriptBloxApi.Objects;
 
 namespace ScriptBloxApi
 {
@@ -22,6 +22,7 @@ namespace ScriptBloxApi
 
         internal static HttpClient HttpClient => LazyClient.Value;
 
+#nullable enable
         internal static async Task<T> Get<T>(string endpoint, (string Key, string Value)[]? queryParams)
         {
             string queryString = string.Join("&", queryParams?.Select(kvp => $"{kvp.Key}={kvp.Value}") ?? []);
@@ -33,15 +34,41 @@ namespace ScriptBloxApi
             HttpResponseMessage response = await HttpClient.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception(
-                    $"Error fetching: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
+            {
+                string responseText = await response.Content.ReadAsStringAsync();
+                (bool success, Error? data) = TryDeserialize<Error>(responseText);
+
+                if (success && data is not null)
+                    throw new Exception(data.Message);
+
+                throw new Exception($"Error fetching: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
+            }
+                
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (typeof(T) == typeof(string))
                 return (T)(object)jsonResponse;
 
-            return JsonSerializer.Deserialize<T>(jsonResponse);
+            T? result = JsonSerializer.Deserialize<T>(jsonResponse);
+
+            if (result is null)
+                throw new Exception("Deserialization returned null.");
+
+            return result;
         }
+
+        internal static (bool, T?) TryDeserialize<T>(string jsonResponse)
+        {
+            try
+            {
+                return (true, JsonSerializer.Deserialize<T>(jsonResponse));
+            }
+            catch 
+            {
+                return (false, default);
+            }
+        }
+#nullable disable
     }
 }
