@@ -13,22 +13,16 @@
     <RepositoryUrl>https://github.com/RiisDev/ScriptBloxAPI</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>scriptblox, scripts, roblox, scripting, lua</PackageTags>
-    <PackageReleaseNotes>- ReWrote parameter handler to lower memory usage
+    <PackageReleaseNotes>- Modified internal Http Usage to properly display ScriptBlox errors
 
-Added Endpoints
+* Fixed `Executors.GetRobloxVersions` returning invalid data type &amp; erroring
 
-- UserStats.GetUserFollowingAsync(string username, int? page = 1, int? max = 20)
-- UserStats.GetUserFollowersAsync(string username, int? page = 1, int? max = 20)
-- UserStats.GetUserInfoAsync(string username, int? page = 1, int? max = 20)
-
-- Comments.GetScriptCommentsAsync(string scriptId, int? page = 1, int? max = 20)
-
-- Executors.GetRobloxVersions()
-
-- Scripts.FetchScriptsFromUser(string username, int? page = 1, int? max = 20)</PackageReleaseNotes>
++ Added `Executors.GetExecutorList` Returns partnered / watched exploits 
++ Added `Executors.GetExecutor(string executor)` Returns info page of execturo
+</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.2.0</Version>
+    <Version>6.3.0</Version>
     <PackageId> ScriptBloxAPI</PackageId>
   </PropertyGroup>
 
