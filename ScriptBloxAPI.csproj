@@ -13,16 +13,10 @@
     <RepositoryUrl>https://github.com/RiisDev/ScriptBloxAPI</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>scriptblox, scripts, roblox, scripting, lua</PackageTags>
-    <PackageReleaseNotes>- Modified internal Http Usage to properly display ScriptBlox errors
-
-* Fixed `Executors.GetRobloxVersions` returning invalid data type &amp; erroring
-
-+ Added `Executors.GetExecutorList` Returns partnered / watched exploits 
-+ Added `Executors.GetExecutor(string executor)` Returns info page of execturo
-</PackageReleaseNotes>
+	  <PackageReleaseNotes>* Fixed SearchScripts</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.3.0</Version>
+    <Version>6.3.1</Version>
     <PackageId> ScriptBloxAPI</PackageId>
   </PropertyGroup>
 

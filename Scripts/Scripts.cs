@@ -96,6 +96,7 @@ namespace ScriptBloxApi.Scripts
         {
             (string Key, string Value)[] queryParams =
             [
+                ("q", query),
                 ("page", page.InternalClamp(1, MaxValue).ToString()),
                 ("max", max.InternalClamp(1, 20).ToString()),
                 ("mode", mode.ToString()),
