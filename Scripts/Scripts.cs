@@ -65,9 +65,9 @@ namespace ScriptBloxApi.Scripts
 
         public static async Task<string> FetchRawScriptAsync(string scriptId) => await Client.Get<string>($"script/raw/{scriptId}", []);
 
-        public static async Task<IReadOnlyList<Script>> FetchTrendingScriptsAsync(int? max = 20)
+        public static async Task<IReadOnlyList<Script>> FetchTrendingScriptsAsync()
         {
-            FetchResult fetchResult = await Client.Get<FetchResult>("script/trending", [("max", max.InternalClamp(1, 20).ToString())]);
+            FetchResult fetchResult = await Client.Get<FetchResult>("script/trending", []);
             return fetchResult.Result.Scripts;
         }
 

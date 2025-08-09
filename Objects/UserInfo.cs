@@ -2,6 +2,12 @@
 using System.Text.Json.Serialization;
 
 namespace ScriptBloxApi.Objects;
+public record UserScriptsStats(
+    [property: JsonPropertyName("likes")] int? Likes,
+    [property: JsonPropertyName("views")] int? Views,
+    [property: JsonPropertyName("scripts")] int? Scripts,
+    [property: JsonPropertyName("dislikes")] int? Dislikes
+);
 
 public record Discord(
     [property: JsonPropertyName("id")] string Id,

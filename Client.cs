@@ -9,6 +9,9 @@ namespace ScriptBloxApi
 {
     internal class Client
     {
+        public class ScriptBloxInternalException(string message) : Exception(message);
+        public class ScriptBloxApiException(string message) : Exception(message);
+
         private static readonly Lazy<HttpClient> LazyClient = new(() =>
         {
             HttpClient client = new()
@@ -39,9 +42,9 @@ namespace ScriptBloxApi
                 (bool success, Error? data) = TryDeserialize<Error>(responseText);
 
                 if (success && data is not null)
-                    throw new Exception(data.Message);
+                    throw new ScriptBloxInternalException(data.Message);
 
-                throw new Exception($"Error fetching: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
+                throw new ScriptBloxInternalException($"Error fetching: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
             }
                 
 
@@ -53,7 +56,7 @@ namespace ScriptBloxApi
             T? result = JsonSerializer.Deserialize<T>(jsonResponse);
 
             if (result is null)
-                throw new Exception("Deserialization returned null.");
+                throw new ScriptBloxApiException("Deserialization returned null.");
 
             return result;
         }

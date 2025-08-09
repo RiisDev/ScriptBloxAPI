@@ -35,6 +35,6 @@ public record Script(
     [property: JsonPropertyName("isPatched")] bool? IsPatched,
     [property: JsonPropertyName("image")] string Image,
     [property: JsonPropertyName("createdAt")] DateTime? CreatedAt,
-    [property: JsonPropertyName("script")] string ScriptData
+    [property: JsonPropertyName("script")] string? ScriptData
 );
 

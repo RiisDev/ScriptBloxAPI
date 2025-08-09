@@ -14,6 +14,14 @@ namespace ScriptBloxAPI.Tests
         }
 
         [Fact]
+        public async Task GetUserScriptStatsAsync_ReturnsResults()
+        {
+            UserScriptsStats? result = await UserStats.GetUserScriptStatsAsync("Septex");
+            Assert.NotNull(result);
+            Assert.IsType<UserScriptsStats>(result);
+        }
+
+        [Fact]
         public async Task GetUserFollowersAsync_ReturnsResults()
         {
             FollowRoot? result = await UserStats.GetUserFollowersAsync("Septex");
