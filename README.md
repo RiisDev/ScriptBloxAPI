@@ -137,7 +137,7 @@ Performs an advanced search for scripts based on a query and filters.
 
 ---
 
-## 🧪 Example: Search for Free, Verified Scripts
+## 🧪 Example: Search for free, verified "admin" scripts, sorted by views from most to least
 
 ```csharp
 var results = await Scripts.SearchScriptsAsync(
